@@ -7,3 +7,6 @@ start homework
         - все файлы с расширением tfvars и все файлы заканчивающиеся на tfvars.json
         - файлы override.tf и override.tf.json, а так же все файлы заканчивающиеся _override.tf.json и _override.tf
         - файлы terraform.rc и .terraformrc
+
+
+added new line
