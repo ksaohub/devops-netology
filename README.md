@@ -12,6 +12,28 @@
     root@ubn-net:/home/safonov# `file /bin/bash`
 /bin/bash: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=2a9f157890930ced4c3ad0e74fc1b1b84aad71e6, for GNU/Linux 3.2.0, stripped
 
+`/etc/magic`
+
+в этом месте вывода strace, показывается где утилита file определяет тип файла: 
+
+stat("/root/.magic.mgc", 0x7fff24acf8e0) = -1 ENOENT (No such file or directory)
+
+stat("/root/.magic", 0x7fff24acf8e0)    = -1 ENOENT (No such file or directory)
+
+openat(AT_FDCWD, "/etc/magic.mgc", O_RDONLY) = -1 ENOENT (No such file or directory)
+
+stat("/etc/magic", {st_mode=S_IFREG|0644, st_size=111, ...}) = 0
+
+`openat(AT_FDCWD, "/etc/magic", O_RDONLY) = 3`
+
+fstat(3, {st_mode=S_IFREG|0644, st_size=111, ...}) = 0
+
+read(3, "# Magic local data for file(1) c"..., 4096) = 111
+
+read(3, "", 4096)                       = 0
+
+close(3)  
+
 3. запустил `tail -f 3` в другой сесии терминала, после чего удалил файл 3
 
     `lsof -p 27167`
