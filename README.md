@@ -1,59 +1,31 @@
 # devops-netology homework
-## 3.6. Компьютерные сети
+## 3.6. Компьютерные сети 2
 
-1. HTTP/1.1 301 Moved Permanently 
+1. https://prnt.sc/VshuBukvzcY7 https://prnt.sc/x_DvOyt5xbzM
 
-   стандартный код ответа HTTP, получаемый в ответ от сервера в ситуации, когда запрошенный ресурс был на постоянной основе перемещён в новое месторасположение, и указывающий на то, что текущие ссылки, использующие данный URL, должны быть обновлены.
+2. протокол LLDP. проверить можно установив пакет lldpd и командой `lldpdctl`
 
-   куда был перенаправлен указано в поле location: https://stackoverflow.com/questions
+3. технология VLAN. пакет vlan, команда `vconfig`. https://prnt.sc/IXV-7dRBmEge
 
-2. Status Code: 307 Internal Redirect
-
-   самый долгий запрос обрабатывался 347ms ( https://prnt.sc/-c8w3dBBwE4u )
-
-3. https://prnt.sc/4vuZ8vM14MRr
-
-4. Провайдер Ростелеком. 
+4. LAG - агрегапия портов. Типы: статический и динамический (использует протокол LACP и позволяет добавлять или удалять интерфесы во время активного соединения)
    
-   AS: 
+   Балансировка может осуществляться:
+   - по MAC-адресу отправителя или MAC-адресу получателя или учитывая оба адреса
 
-   Information related to '94.50.240.0/20AS12389'
+   - по IP-адресу отправителя или IP-адресу получателя или учитывая оба адреса
+
+   - по номеру порта отправителя или номеру порта получателя или учитывая оба порта
+
+   https://prnt.sc/N8mNBXa1QI22
+
+5. в сети с маской /29 8 ip адресов. из сети с маской /24 можно получить 32 подсети с маской /29.
    
-      route:          94.50.240.0/20
+   10.10.10.0/29 10.10.10.8/29 10.10.10.16/29
 
-      descr:          Rostelecom networks
+6. частные адрес так же можно взять из сети 100.64.0.0/10. для подсети из 40-50 хостов достаточно маски /26, в которой может быть 62 хоста.
 
-      origin:         AS12389
+7. проверить ARP табилцу windows можно командой `arp -a`, на linux можно этой же командой, если поставить net-tools, или командой `ip neigh`
 
-      mnt-by:         ROSTELECOM-MNT
+   удалить ip: `arp -d 1.1.1.1`
 
-      created:        2018-10-31T11:47:25Z
-
-      last-modified:  2018-10-31T11:47:25Z
-
-      source:         RIPE # Filtered
-
-5. https://prnt.sc/NoG7sDEUFfQk
-
-   AS12705 - `as-name:        PFES`
-
-   AS12389 - `as-name:        ROSTELECOM-AS`
-
-   
-6. https://prnt.sc/-IWzRfc3mz8x наибольшая задержка на седьмом участке
-
-7. DNS сервера:
-
-   .                       5046    IN      NS      a.root-servers.net.
-
-   google.                 172800  IN      NS      ns-tld1.charlestonroadregistry.com.
-
-   dns.google.             10800   IN      NS      ns3.zdns.google. 
-
-   А записи: 
-
-   dns.google.             900     IN      A       8.8.8.8
-   
-   dns.google.             900     IN      A       8.8.4.4
-
-8. https://prnt.sc/yi5sPsXVR9cL
+   очистить кеш: `ip neigh flush all`
