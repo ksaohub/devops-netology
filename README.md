@@ -1,16 +1,16 @@
 # devops-netology homework
-## 3.6. Компьютерные сети 3
+## 3.9. Элементы безопасности информационных систем
 
-1. https://prnt.sc/NypuEEoJ8G0N , https://prnt.sc/galhm9UyobDw
+1. https://prnt.sc/FwqxNOYkNAiN
 
-2. создание интерфейса: https://prnt.sc/GE3qPIJjX_FJ
+2. https://prnt.sc/LSyqFdnzt3oo
 
-   добавление динамических маршрутов: https://prnt.sc/e7akejP-tW-j , https://prnt.sc/Fl2Q6mD5LcTU
+3. https://prnt.sc/nFNcVSfgnXol , https://prnt.sc/BjLrHB1ggLrg , https://prnt.sc/1zeF5fdG5C-e
 
-   добавление статических маршрутов: https://prnt.sc/BdP_cYBk8_nb
+4. https://prnt.sc/_KjPi4sdB_IE , https://prnt.sc/gJyri1-IRW4Y
 
-3. tcp: https://prnt.sc/_Jh9f5nn6Xly в данном примере на 22 порту открыт ssh протокол. Так же, например, tcp использует веб-сервер nginx (порт 80).
+5. https://prnt.sc/ams0JVJ-lzjg , https://prnt.sc/Z-hTNNuqoOx3
 
-4. udp: https://prnt.sc/uA1WU2iEMRch . Используют протоколы, например, SNMP, RIP, DHCP и приложения не требующие установки соединения (видео и госовой трафик).
+6. https://prnt.sc/Yef6lVTz1aIA
 
-5. https://prnt.sc/pmTvYLa51oSf :)
+7. https://prnt.sc/v7IHf7KVri0e , https://prnt.sc/Aiq6aTklVo_-
