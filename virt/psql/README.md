@@ -37,4 +37,6 @@
 
 ![img_9.png](img_9.png)
 
-Для уникальности значения столбца `title` его можно индексировать: `CREATE UNIQUE INDEX title_idx ON orders (title);`
+Для уникальности значения столбца `title` при создании таблицы для столбца `title` добавить `UNIQUE`
+
+![img_11.png](img_11.png)
