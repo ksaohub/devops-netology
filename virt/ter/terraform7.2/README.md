@@ -10,6 +10,6 @@
 # 2.
 
 - Образ для Yandex.Cloud можно создать с помощью Packer.
-- 
+- https://github.com/ksaohub/devops-netology/tree/main/terraform
 ![img_1.png](img_1.png)
 ![img_2.png](img_2.png)
