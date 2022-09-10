@@ -34,3 +34,4 @@
 ![img.png](pic/img_8.png)
 
 # 12.
+https://github.com/ksaohub/devops-netology/tree/main/ansible/asible8.1
