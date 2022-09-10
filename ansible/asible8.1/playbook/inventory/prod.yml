@@ -1,0 +1,14 @@
+---
+  el:
+   hosts:
+    centos7:
+     ansible_host: 192.168.100.2
+  deb:
+   hosts:
+    ubuntu:
+     ansible_host: 192.168.100.3
+     ansible_user: safonov
+  local:
+   hosts:
+    localhost:
+     ansile-connection: local
