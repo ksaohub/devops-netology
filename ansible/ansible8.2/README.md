@@ -11,6 +11,7 @@
 
 # 4. 
 Скачивает и устанавливает
+
 ![img_4.png](pic/img_4.png) 
 
 # 5.
@@ -36,3 +37,6 @@ Playbook скачивает и устанавливает Vector и Clickhouse. 
 ![img_10.png](pic/img_10.png)
 
 Как пофиксить пока не разобрался (гуглил достаточно долго). Накостылял так, но в целом playbook отработал :)
+
+# 10. 
+https://github.com/ksaohub/devops-netology/tree/main/ansible/ansible8.2/playbook
