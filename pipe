@@ -1,0 +1,201 @@
+def licenseProperties = null
+def repository = 'git@bitbucket.org:antiphish/antiphish-yii.git'
+def phpVersion = '71'
+
+pipeline {
+	agent {
+        node {
+            label ''
+            customWorkspace "${customWorkspace}"
+        }
+    }
+	environment {
+        LICPASSPHRASE_CREDID = credentials('f4b2680d-bdf6-474e-b7b9-2c927e02d148')
+        IONCUBEKEY_CREDID = credentials('de7a4608-0a52-4605-9fe2-0cc19610b6ac')
+        GITHUB_CREDID = credentials('github-token')
+    }
+	parameters {
+        booleanParam(name: 'isDev', defaultValue: true, description: '')
+		booleanParam(name: 'prepareUpdateFile', defaultValue: true, description: '')
+		booleanParam(name: 'copyUpdateToAntph', defaultValue: true, description: 'Example: link will be https://antph.ru/files/update-dentsu-v242cu11-200601.zip')
+		booleanParam(name: 'ionCube', defaultValue: true, description: '')
+        string(name: 'customWorkspace', defaultValue: '', description: '')
+        booleanParam(name: 'cleanWorkspace', defaultValue: true, description: '')
+        booleanParam(name: 'checkout', defaultValue: true, description: '')
+		string(name: 'specificBranch', defaultValue: '', description: 'Enter specific branch value, example: release/RTK-2.4.2')
+		string(name: 'name', defaultValue: 'update.zip', description: 'Example: update-v243cu1-200601.zip')
+		choice(name: 'branch', choices: ['feature/AN-4330', 'master', 'release/2.4.3', 'release/2.4.4'], description: 'Pick something')
+	}
+	stages {
+		stage('Clean Workspace') {
+            when {
+                expression {
+                    params.cleanWorkspace
+                }
+            }
+			steps {
+				sh '/usr/local/bin/ioncube_encoder/ioncube_encoder.sh --activate'
+				cleanWs()
+			}
+		}
+		stage('Branch') {
+			steps {
+				script {
+					branch = "${params.branch}"
+					if (specificBranch) {
+						branch = specificBranch
+					}
+				}
+			}
+		}
+		stage('Checkout') {
+            when {
+                expression {
+                    params.checkout
+                }
+            }
+            steps {
+				dir ('source') {
+					fileOperations([folderDeleteOperation(folderPath: 'translate')])
+					echo "Git checkout ${branch}"
+					checkout([$class: 'GitSCM', branches: [[name: branch]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: false]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '1', url: repository]]])
+				//	fileOperations([fileRenameOperation(source: '.eslintrc.json.example', destination: '.eslintrc.json')])
+					echo 'Clear output'
+					fileOperations([folderDeleteOperation(folderPath: 'output')])
+				}
+			}
+		}
+        stage('Build') {
+            failFast true
+            parallel {
+                stage('source Build') {
+                    steps {
+                        sh '/usr/local/bin/ioncube_encoder/ioncube_encoder.sh --activate'
+                        dir ('source') {
+                            sh """
+                                npm set progress=false
+                                npm install
+                                npm run gettext-compile
+                                export NODE_OPTIONS="--max-old-space-size=8192"
+                                npm run build
+                            """
+                        }
+                    }
+                }
+				stage('Composer') {
+					steps {
+						dir ('source') {
+                            sh """
+                                composer config --global --auth github-oauth.github.com ${GITHUB_CREDID}
+                                composer global require "fxp/composer-asset-plugin:^1.4.4"
+                                composer global require "hirak/prestissimo"
+                            """
+                            script {
+                                if(Boolean.valueOf(isDev)) {
+                                    sh 'composer install --no-dev'
+                                } else {
+                                    sh 'composer install'
+                                }
+                            }
+                            sh 'vendor/bin/browscap-php browscap:update --remote-file Full_PHP_BrowscapINI || true'
+                        }
+					}
+				}
+                stage('edu Build') {
+                    steps {
+                        dir ('source/edu') {
+                            sh 'npm install'
+                        }
+                        fileOperations([
+                            folderDeleteOperation(folderPath: 'source/edu/web/static'),
+                            folderDeleteOperation(folderPath: 'source/edu/web/files')
+                        ])
+                        dir ('source/edu') {
+                            sh """
+                                npm run gettext-compile
+                                npm run build
+                            """
+                        } //
+                    }
+                }
+                stage('outlook Build') {
+                    steps {
+                        dir ('source/outlook') {
+                            sh 'npm install'
+                            fileOperations([folderDeleteOperation(folderPath: 'dist')])
+                            sh 'npm run build'
+                        }
+                        fileOperations([fileCopyOperation(includes: 'source/fonts/**', excludes: '', targetLocation: 'source/vendor/dompdf/dompdf/lib/fonts/', flattenFiles: 'false', renameFiles: 'true')])
+                    }
+                }
+            }
+        }
+        stage('IonCube') {
+            steps {
+                dir ('output') {
+                    script {
+                        if(Boolean.valueOf(ionCube)){
+                            echo 'IonCube'
+                            phpVersion = phpVersion.toInteger()
+                            sh """
+                                #!/bin/bash +x
+                                /usr/local/bin/ioncube_encoder/ioncube_encoder.sh  -${phpVersion} --exclude "*.*"  --encode "yii" --encode "*.php" --encode "*.inc" --ignore "@/*@tmp/" --copy "@/vendor/symfony/polyfill-intl-grapheme/bootstrap80.php" --copy "@/vendor/symfony/polyfill-intl-idn/bootstrap80.php" --copy "@/vendor/symfony/polyfill-intl-normalizer/bootstrap80.php" --copy "@/vendor/symfony/polyfill-mbstring/bootstrap80.php" --copy "@/vendor/zircote/swagger-php/tests/Fixtures/TypedProperties.php" --copy "@/vendor/symfony/var-dumper/Tests/Fixtures/Php74.php" --ignore "@/node_modules/" --ignore "@/outlook/" --ignore "@/edu/" --copy "@/outlook/dist/" --copy "@/edu/web/" --copy "@/translate/" --ignore "*~" --ignore "~*" --ignore "*.example" --ignore "*.bak" --ignore "*.tmp" --ignore "*.iep" --ignore "*.git" --ignore ".git/" --ignore ".svn/" --copy ".*/" --copy "@/vendor/codeception/codeception/tests/data/Invalid.php" --copy "@/vendor/phpunit/php-code-coverage/tests/_files/Crash.php" --ignore-deprecated-warnings --ignore "*.swp" --add-comment "// Please contact support@antiphish.ru for help" --dynamic-key-errors "normal" --encoding-key "lic:externalKey=\'${IONCUBEKEY_CREDID}\'" --without-loader-check --no-doc-comments --obfuscate "linenos" --optimise "max" --obfuscation-key "${IONCUBEKEY_CREDID}"  --disable-auto-prepend-append --with-license "license.antph" --license-check "auto" --passphrase "${LICPASSPHRASE_CREDID}" --property "attackHostname=\'attack.local\'" --property "baseHostname=\'attack.local\'" --property "expiredDate=\'01.01.2019\'" --property "systemUpdateEnabled=\'1\'" --property "updatePassword=\'MmVo9zezGn6RCOeWJCF7\'" --property "timezone=\'Etc/GMT-3\'" --property "externalKey=\'${IONCUBEKEY_CREDID}\'" --property "eduHostname=\'edu.local\'" --merge-target --copy "@/.bowerrc" --copy "@/.gitignore" --copy "@/composer.json" --copy "@/composer.lock" --copy="@/vendor/squizlabs/" --allow-reflection-all ../source -o ./
+                            """
+                            writeFile([file: 'lic.key', text: LICPASSPHRASE_CREDID])
+                            writeFile([file: 'ion.key', text: IONCUBEKEY_CREDID])
+                        }
+                        else {
+                            sh 'rsync -arW --exclude=.git --exclude=outlook/.git --exclude=node_modules --exclude=outlook/node_modules --exclude=edu/.git --exclude=node_modules --exclude=edu/node_modules --exclude=translate/.git --exclude=*@tmp "../source/" "./"'
+                        }
+                    }
+                }
+            }
+        }
+        stage('Clean tmp files') {
+			steps {
+				fileOperations([
+                    folderDeleteOperation(folderPath: 'output/outlook/node_modules'),
+					folderDeleteOperation(folderPath: 'output/outlook/.git'),
+					folderDeleteOperation(folderPath: 'output/.git'),
+					folderDeleteOperation(folderPath: 'output/edu/.git'),
+                    folderDeleteOperation(folderPath: 'output/node_modules'),
+					folderDeleteOperation(folderPath: 'output/edu/node_modules'),
+                    folderDeleteOperation(folderPath: 'output/assets/webpack'),
+					folderDeleteOperation(folderPath: 'output/translate/.git'),
+					folderDeleteOperation(folderPath: 'output/vendor/zyx/zyx-phpmailer/.git'),
+				])
+			}
+		}
+		stage('Prepare update file') {
+			when {
+				expression {
+					params.prepareUpdateFile
+				}
+			}
+			steps {
+				fileOperations([fileDeleteOperation(includes: 'update.zip')])
+				dir ('output') {
+					echo 'Generating update file'
+					sh 'zip -9 -r ../update.zip ./*'
+				}
+			}
+		}
+		stage('Copy Update To Antph') {
+			when {
+				expression {
+					params.copyUpdateToAntph
+				}
+			}
+			steps {
+				sshagent(['0dd55c42-6881-4c59-85f9-33e9725735c9']) {
+					sh 'rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --progress update.zip www@antph.ru:/srv/www/antph.ru/files/${name}'
+				}
+			}
+		}
+        stage('Show version') {
+			steps {
+				sh "cat source/config/params.php | grep Params::PROJECT_VERSION"
+			}
+		}
+	}
+}
