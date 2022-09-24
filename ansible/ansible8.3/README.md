@@ -33,3 +33,4 @@
 Playbook скачивает и устанавливает Vector, Clickhouse и Lighthouse на разных хостах в Яндекс облаке. Запускается сервис Clickhouse и создается БД. Так же устанавливается и настаивается веб сервер nginx на хосте с lighthouse для доступа в веб интерфейс.  
 
 ### 10.
+https://github.com/ksaohub/devops-netology/blob/main/ansible/ansible8.3/playbook/site.yml
