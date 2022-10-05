@@ -11,9 +11,11 @@
 Созданы два workflow:
 
  - для багов
+
 ![img_4.png](pic/img_4.png)
 
  - для остальных задач
+
 ![img_5.png](pic/img_5.png)
 
 # 3.
@@ -27,3 +29,5 @@
 ![img_6.png](pic/img_6.png)
 
 # 4. 
+
+Ссылка на workаlow в xml: https://github.com/ksaohub/devops-netology/tree/main/cicd/9.1/workflows
