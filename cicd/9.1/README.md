@@ -23,7 +23,7 @@
 Заведены задачи и проведены по созданным workflow:
 
  - по доске kanban
-![img_1.png](pic/img_1.png)
+![img_7.png](pic/img_7.png)
 
  - по доске scrum
 ![img_6.png](pic/img_6.png)
@@ -31,3 +31,4 @@
 # 4. 
 
 Ссылка на workаlow в xml: https://github.com/ksaohub/devops-netology/tree/main/cicd/9.1/workflows
+
