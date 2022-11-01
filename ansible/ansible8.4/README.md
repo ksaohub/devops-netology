@@ -19,7 +19,8 @@
 Подготовлены README.md для ролей.
 
 # 7. 
-Сделано, ссылка на репозиторий: https://github.com/ksaohub/lighthouse-role
+Сделано для lighthouse, ссылка на репозиторий: https://github.com/ksaohub/lighthouse-role
+
 Сделано и для tasks nginx, ссылка на репозиторий с ролью nginx: https://github.com/ksaohub/nginx-role
 
 # 8.
