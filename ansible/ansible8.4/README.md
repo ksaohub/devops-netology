@@ -29,7 +29,10 @@
 Playbook переработан на использование roles, ссылка: https://github.com/ksaohub/devops-netology/blob/main/ansible/ansible8.4/playbook/site.yml
 
 # 11. 
-Сcылка на репозитории c playbook:
+Сcылка на репозитории c playbook: https://github.com/ksaohub/devops-netology/blob/main/ansible/ansible8.4/playbook
+
 Ссылка с ролью nginx: https://github.com/ksaohub/nginx-role
+
 Ссылка с ролью lighthouse-role: https://github.com/ksaohub/lighthouse-role
+
 Ссылка с ролью vector-role: https://github.com/ksaohub/vector-role
