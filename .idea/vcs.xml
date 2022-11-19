@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ansible/ansible8.4/playbook/roles" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ansible/ansible8.5/playbook/roles" vcs="Git" />
   </component>
 </project>
