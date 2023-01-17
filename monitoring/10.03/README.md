@@ -14,3 +14,4 @@
 
 ### 4.
 
+https://github.com/ksaohub/devops-netology/blob/main/monitoring/10.03/dashbord.json
