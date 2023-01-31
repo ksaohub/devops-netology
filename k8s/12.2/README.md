@@ -18,3 +18,4 @@
 
 ### 3.
 
+Ссылка на файлы манифестов: https://github.com/ksaohub/devops-netology/tree/main/k8s/12.2/confs
