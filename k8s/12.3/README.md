@@ -27,4 +27,4 @@ curl из pod multitools до реплик приложений созданны
 
 ### Ссылка на файлы манифестов:
 
-
+https://github.com/ksaohub/devops-netology/tree/main/k8s/12.3/manifests
