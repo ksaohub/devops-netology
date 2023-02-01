@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-nginx-and-multitools
+spec:
+  selector:
+    app: nginx-mt
+  ports:
+    - protocol: TCP
+      port: 80

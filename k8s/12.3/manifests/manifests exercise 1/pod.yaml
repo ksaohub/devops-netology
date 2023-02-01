@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multitools
+  labels:
+    app: nginx-mt
+spec:
+  containers:
+  - name: multitool
+    image: wbitt/network-multitool
