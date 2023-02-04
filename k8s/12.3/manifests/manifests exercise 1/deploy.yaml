@@ -17,6 +17,5 @@ spec:
       containers:
       - name: nginx
         image: nginx:latest
-      containers:
       - name: multitool
         image: wbitt/network-multitool
