@@ -8,7 +8,7 @@
 
 Ссылка на манифест:
 
-
+https://github.com/ksaohub/devops-netology/blob/main/k8s/12.4/manifests/dep-ng-mt-svc.yaml
 
 ### 2.
 
@@ -16,3 +16,4 @@
 
 Ссылка на манифест:
 
+https://github.com/ksaohub/devops-netology/blob/main/k8s/12.4/manifests/nginxdep-and-svc-nodePort.yaml
