@@ -13,6 +13,8 @@ https://github.com/ksaohub/devops-netology/blob/main/k8s/12.5/manifests/
 ### 2.
 Ingress-controller включен
 
+![img_2.png](img/img_2.png)
+
 ![img_5.png](img/img_5.png)
 
 Ссылка на манифест: https://github.com/ksaohub/devops-netology/blob/main/k8s/12.5/manifests/ingress.yaml
