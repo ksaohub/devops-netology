@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: mt
+  labels:
+    app: mt
+spec:
+  selector:
+    matchLabels:
+      app: mt
+  template:
+    metadata:
+      labels:
+        app: mt
+    spec:
+      containers:
+      - name: mt
+        image: wbitt/network-multitool
+        volumeMounts:
+          - name: k8s-vol
+            mountPath: /tmp/syslog
+      volumes:
+      - name: k8s-vol
+        hostPath:
+          path: /var/log/syslog

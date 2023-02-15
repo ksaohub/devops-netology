@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox-mt
+  labels:
+    app: busybox-mt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox-mt
+  template:
+    metadata:
+      labels:
+        app: busybox-mt
+    spec:
+      containers:
+      - name: busybox
+        image: busybox
+        command: ['sh', '-c', 'while true; do date >> /tmp/dete.txt; sleep 5; done;']
+        volumeMounts:
+          - name: k8s-vol
+            mountPath: /tmp/
+      - name: mt
+        image: wbitt/network-multitool
+        volumeMounts:
+          - name: k8s-vol
+            mountPath: /tmp/
+      volumes:
+      - name: k8s-vol
+        hostPath:
+          path: /tmp/k8sVol
